@@ -1,0 +1,15 @@
+{
+  "name": "압수수색영장신청서작성기",
+  "version": "1.0.0",
+  "private": true,
+  "description": "클릭형 입력으로 압수수색영장신청서(별지 제55호서식) .hwpx 파일을 생성하는 로컬 전용 도구",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "yauzl": "^3.4.0",
+    "yazl": "^3.3.1"
+  }
+}
