@@ -93,7 +93,10 @@
       statusEl.textContent = "생성 완료: " + fileName + " (output 폴더에도 저장됨)";
     } catch (err) {
       statusEl.classList.add("err");
-      statusEl.textContent = "오류: " + err.message;
+      const isNetworkError = err instanceof TypeError;
+      statusEl.textContent = isNetworkError
+        ? "서버에 연결할 수 없습니다. start.bat 실행창이 열려 있는지 확인한 뒤 이 페이지를 새로고침해주세요."
+        : "오류: " + err.message;
     } finally {
       generateBtn.disabled = false;
     }

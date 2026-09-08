@@ -79,7 +79,9 @@ app.post("/api/generate", async (req, res) => {
   }
 });
 
-const server = app.listen(PORT, () => {
+// 127.0.0.1에만 바인딩 — 같은 네트워크의 다른 기기에서는 접속할 수 없고,
+// 이 PC 안에서만 열리는 서버임을 보장한다.
+const server = app.listen(PORT, "127.0.0.1", () => {
   const url = `http://localhost:${PORT}`;
   console.log(`압수수색영장신청서 작성기 서버가 시작되었습니다: ${url}`);
   console.log("이 창을 닫으면 프로그램이 종료됩니다.");
