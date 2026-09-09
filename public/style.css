@@ -137,3 +137,25 @@ button.primary{
 button.primary:disabled{opacity:.6;cursor:default;}
 #status{font-size:13px;color:var(--ink-muted);}
 #status.err{color:var(--accent);}
+
+/* 민감정보 카드/배너 — 일반 안내와 시각적으로 구분되는 경고 톤 */
+.notice-danger{
+  background:var(--accent-soft);
+  border-left:3px solid var(--accent);
+  color:var(--ink);
+}
+.card-danger{
+  border:1px solid var(--accent);
+  background:linear-gradient(var(--accent-soft), var(--accent-soft)) left top / 4px 100% no-repeat, var(--surface);
+}
+.danger-tag{
+  display:inline-block;
+  font-size:10.5px;font-weight:700;letter-spacing:.04em;
+  color:var(--accent);
+  background:var(--accent-soft);
+  border:1px solid var(--accent);
+  border-radius:999px;
+  padding:2px 9px;
+  margin-left:8px;
+  vertical-align:middle;
+}

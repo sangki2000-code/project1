@@ -1,104 +1,108 @@
 (function () {
   "use strict";
 
-  const form = document.getElementById("form");
-  const statusEl = document.getElementById("status");
-  const generateBtn = document.getElementById("generateBtn");
+  function initApp() {
+    const form = document.getElementById("form");
+    const statusEl = document.getElementById("status");
+    const generateBtn = document.getElementById("generateBtn");
 
-  function renderChips(container, items, mode) {
-    container.innerHTML = "";
-    items.forEach((text) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "chip";
-      btn.textContent = text;
-      btn.addEventListener("click", () => applyChip(container, text, mode));
-      container.appendChild(btn);
-    });
-  }
-
-  function applyChip(container, text, mode) {
-    const fieldName = container.dataset.chipsFor;
-    const field = form.elements[fieldName];
-    if (!field) return;
-    if (mode === "append-line") {
-      const current = field.value.replace(/\s+$/, "");
-      field.value = current ? current + "\n" + text : text;
-    } else {
-      field.value = text;
+    function renderChips(container, items, mode) {
+      container.innerHTML = "";
+      items.forEach((text) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "chip";
+        btn.textContent = text;
+        btn.addEventListener("click", () => applyChip(container, text, mode));
+        container.appendChild(btn);
+      });
     }
-    field.focus();
-  }
 
-  fetch("/api/presets")
-    .then((r) => r.json())
-    .then((presets) => {
-      renderChips(
-        document.querySelector('[data-chips-for="crimeName"]'),
-        presets.CRIME_NAME_PRESETS,
-        "replace"
-      );
-      renderChips(
-        document.querySelector('[data-chips-for="seizureItems"]'),
-        presets.SEIZURE_ITEM_PRESETS,
-        "append-line"
-      );
-      renderChips(
-        document.querySelector('[data-chips-for="searchPlace"]'),
-        presets.SEARCH_PLACE_PRESETS,
-        "append-line"
-      );
-      document.getElementById("crimeFactsStarter").addEventListener("click", () => {
-        const field = form.elements["crimeFacts"];
-        field.value = field.value ? field.value : presets.CRIME_FACTS_STARTER;
-        field.focus();
-      });
-    })
-    .catch(() => {
-      statusEl.textContent = "프리셋을 불러오지 못했습니다 (직접 입력은 가능합니다).";
-    });
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    statusEl.classList.remove("err");
-    statusEl.textContent = "생성 중...";
-    generateBtn.disabled = true;
-
-    const data = Object.fromEntries(new FormData(form).entries());
-
-    try {
-      const res = await fetch("/api/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.error || "생성에 실패했습니다.");
+    function applyChip(container, text, mode) {
+      const fieldName = container.dataset.chipsFor;
+      const field = form.elements[fieldName];
+      if (!field) return;
+      if (mode === "append-line") {
+        const current = field.value.replace(/\s+$/, "");
+        field.value = current ? current + "\n" + text : text;
+      } else {
+        field.value = text;
       }
-      const blob = await res.blob();
-      const disposition = res.headers.get("Content-Disposition") || "";
-      const match = /filename\*=UTF-8''([^;]+)/.exec(disposition);
-      const fileName = match ? decodeURIComponent(match[1]) : "압수수색영장신청서.hwpx";
-
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = fileName;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-
-      statusEl.textContent = "생성 완료: " + fileName + " (output 폴더에도 저장됨)";
-    } catch (err) {
-      statusEl.classList.add("err");
-      const isNetworkError = err instanceof TypeError;
-      statusEl.textContent = isNetworkError
-        ? "서버에 연결할 수 없습니다. start.bat 실행창이 열려 있는지 확인한 뒤 이 페이지를 새로고침해주세요."
-        : "오류: " + err.message;
-    } finally {
-      generateBtn.disabled = false;
+      field.focus();
     }
-  });
+
+    fetch("/api/presets")
+      .then((r) => r.json())
+      .then((presets) => {
+        renderChips(
+          document.querySelector('[data-chips-for="crimeName"]'),
+          presets.CRIME_NAME_PRESETS,
+          "replace"
+        );
+        renderChips(
+          document.querySelector('[data-chips-for="seizureItems"]'),
+          presets.SEIZURE_ITEM_PRESETS,
+          "append-line"
+        );
+        renderChips(
+          document.querySelector('[data-chips-for="searchPlace"]'),
+          presets.SEARCH_PLACE_PRESETS,
+          "append-line"
+        );
+        document.getElementById("crimeFactsStarter").addEventListener("click", () => {
+          const field = form.elements["crimeFacts"];
+          field.value = field.value ? field.value : presets.CRIME_FACTS_STARTER;
+          field.focus();
+        });
+      })
+      .catch(() => {
+        statusEl.textContent = "프리셋을 불러오지 못했습니다 (직접 입력은 가능합니다).";
+      });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      statusEl.classList.remove("err");
+      statusEl.textContent = "생성 중...";
+      generateBtn.disabled = true;
+
+      const data = Object.fromEntries(new FormData(form).entries());
+
+      try {
+        const res = await fetch("/api/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.error || "생성에 실패했습니다.");
+        }
+        const blob = await res.blob();
+        const disposition = res.headers.get("Content-Disposition") || "";
+        const match = /filename\*=UTF-8''([^;]+)/.exec(disposition);
+        const fileName = match ? decodeURIComponent(match[1]) : "압수수색영장신청서.hwpx";
+
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+
+        statusEl.textContent = "생성 완료: " + fileName + " (이 PC에는 별도로 저장되지 않았습니다 — 지금 받은 파일이 유일한 사본입니다)";
+      } catch (err) {
+        statusEl.classList.add("err");
+        const isNetworkError = err instanceof TypeError;
+        statusEl.textContent = isNetworkError
+          ? "서버에 연결할 수 없습니다. start.bat 실행창이 열려 있는지 확인한 뒤 이 페이지를 새로고침해주세요."
+          : "오류: " + err.message;
+      } finally {
+        generateBtn.disabled = false;
+      }
+    });
+  }
+
+  initApp();
 })();
