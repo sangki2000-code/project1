@@ -18,18 +18,46 @@
       });
     }
 
+    function appendLine(field, text) {
+      const current = field.value.replace(/\s+$/, "");
+      field.value = current ? current + "\n" + text : text;
+      field.focus();
+    }
+
     function applyChip(container, text, mode) {
       const fieldName = container.dataset.chipsFor;
       const field = form.elements[fieldName];
       if (!field) return;
       if (mode === "append-line") {
-        const current = field.value.replace(/\s+$/, "");
-        field.value = current ? current + "\n" + text : text;
+        appendLine(field, text);
       } else {
         field.value = text;
+        field.focus();
       }
-      field.focus();
     }
+
+    function wireAddressAdd(buttonId, inputId, labelPrefix) {
+      const btn = document.getElementById(buttonId);
+      const input = document.getElementById(inputId);
+      btn.addEventListener("click", () => {
+        const addr = input.value.trim();
+        if (!addr) {
+          input.focus();
+          return;
+        }
+        appendLine(form.elements["searchPlace"], labelPrefix + ": " + addr);
+        input.value = "";
+      });
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          btn.click();
+        }
+      });
+    }
+
+    wireAddressAdd("addResidence", "residenceAddr", "피의자의 주거지");
+    wireAddressAdd("addWorkplace", "workplaceAddr", "피의자가 운영하는 사업장");
 
     fetch("/api/presets")
       .then((r) => r.json())
@@ -49,11 +77,6 @@
           presets.SEARCH_PLACE_PRESETS,
           "append-line"
         );
-        document.getElementById("crimeFactsStarter").addEventListener("click", () => {
-          const field = form.elements["crimeFacts"];
-          field.value = field.value ? field.value : presets.CRIME_FACTS_STARTER;
-          field.focus();
-        });
       })
       .catch(() => {
         statusEl.textContent = "프리셋을 불러오지 못했습니다 (직접 입력은 가능합니다).";
