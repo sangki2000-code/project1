@@ -151,6 +151,8 @@ textarea{resize:vertical;font-family:inherit;line-height:1.6;}
 }
 .chip:hover{border-color:var(--accent);color:var(--accent);}
 .chip:focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
+.chip:disabled{opacity:.5;cursor:not-allowed;}
+.chip:disabled:hover{border-color:var(--rule);color:var(--ink);}
 
 .chip-selected{border-color:var(--accent);background:var(--accent);color:#fdf6f4;}
 

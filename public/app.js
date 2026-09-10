@@ -59,6 +59,27 @@
     wireAddressAdd("addResidence", "residenceAddr", "피의자의 주거지");
     wireAddressAdd("addWorkplace", "workplaceAddr", "피의자가 운영하는 사업장");
 
+    function wireUseSuspectAddress(buttonId) {
+      const btn = document.getElementById(buttonId);
+      const suspectAddressField = form.elements["suspectAddress"];
+      if (!btn || !suspectAddressField) return;
+      const syncState = () => {
+        btn.disabled = !suspectAddressField.value.trim();
+      };
+      syncState();
+      suspectAddressField.addEventListener("input", syncState);
+      btn.addEventListener("click", () => {
+        const addr = suspectAddressField.value.trim();
+        if (!addr) {
+          suspectAddressField.focus();
+          return;
+        }
+        appendLine(form.elements["searchPlace"], "피의자의 주거지: " + addr);
+      });
+    }
+
+    wireUseSuspectAddress("useSuspectAddress");
+
     function setupEvidencePicker(categories) {
       const groupsEl = document.getElementById("evidenceGroups");
       const itemsEl = document.getElementById("evidenceItems");
