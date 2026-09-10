@@ -104,6 +104,7 @@
       </div>
       <label class="block">죄명 (피의사건명)
         <div class="chips" data-chips-for="crimeName"></div>
+        <p class="hint">📄 표시가 있는 죄명은 클릭하면 아래 "범죄사실" 칸에 해당 죄명의 작성례가 자동으로 채워집니다. (실제 사건 내용으로 반드시 고쳐 쓰세요)</p>
         <span class="tip-anchor">
           <span class="tip-bubble">정식 법령 명칭 뒤에 "위반"을 붙여 적어요. 위 칩을 눌러도 되고 직접 입력해도 됩니다.</span>
           <input type="text" name="crimeName" placeholder="예: 관세법위반 — 위 칩을 클릭하거나 직접 입력하세요" />
@@ -154,6 +155,20 @@
         <span class="tip-anchor">
           <span class="tip-bubble">왜 임의제출이 아니라 압수·수색·검증이어야 하는지 적으세요(증거인멸 우려, 임의제출 거부 등).</span>
           <textarea name="necessityReason" rows="3" placeholder="예: 임의제출을 요구할 경우 증거를 인멸할 우려가 있어 압수수색이 필요함"></textarea>
+        </span>
+      </label>
+
+      <label class="block">범죄혐의를 인정할 만한 정황 (증거관계)
+        <p class="hint">구분을 먼저 클릭하고, 이어서 나오는 세부 항목을 클릭하면 아래 칸에 "구분 : 항목"으로 한 줄씩 추가됩니다. 목록에 없으면 직접 입력해서 추가하세요.</p>
+        <div class="chips" id="evidenceGroups"></div>
+        <div class="chips" id="evidenceItems"></div>
+        <div class="evidence-manual">
+          <input type="text" id="evidenceManualInput" placeholder="목록에 없는 항목은 여기에 직접 입력" />
+          <button type="button" id="evidenceManualAdd" class="chip">추가</button>
+        </div>
+        <span class="tip-anchor">
+          <span class="tip-bubble">피의자의 범죄혐의를 뒷받침하는 인적·물적 증거를 적어요. 위 구분ㆍ항목을 클릭해 추가하거나 직접 입력해도 됩니다.</span>
+          <textarea name="crimeCircumstances" rows="6" placeholder="예) 금융자료 : 계좌거래내역"></textarea>
         </span>
       </label>
     </section>
