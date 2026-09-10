@@ -1,14 +1,11 @@
 "use strict";
 
 const path = require("path");
-const fs = require("fs");
 const express = require("express");
 const { generateHwpxBuffer } = require("./lib/generateHwpx");
 const presets = require("./lib/fields");
 
 const PORT = process.env.PORT || 4173;
-const OUTPUT_DIR = path.join(__dirname, "output");
-if (!fs.existsSync(OUTPUT_DIR)) fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
 const app = express();
 app.use(express.json({ limit: "2mb" }));
@@ -47,11 +44,17 @@ app.post("/api/generate", async (req, res) => {
       validYear: validDate.year,
       validMonth: validDate.month,
       validDay: validDate.day,
+      // 피의자 인적사항 — 민감정보. 사용자가 입력한 경우에만 채워지며,
+      // 서버 어디에도 저장하지 않고 응답으로 곧바로 돌려보내기만 한다.
+      suspectName: body.suspectName || "",
+      suspectRRN: body.suspectRRN || "",
+      suspectJob: body.suspectJob || "",
+      suspectAddress: body.suspectAddress || "",
       defenseCounsel: body.defenseCounsel || "",
       seizureItems: body.seizureItems || "",
       searchPlace: body.searchPlace || "",
-      crimeFacts: body.crimeFacts || "",
-      crimeCircumstances: body.crimeCircumstances || "",
+      crimeContext: body.crimeContext || "",
+      necessityReason: body.necessityReason || "",
       over7DaysReason: body.over7DaysReason || "",
       multipleWarrantsReason: body.multipleWarrantsReason || "",
       nightExecutionReason: body.nightExecutionReason || "",
@@ -66,8 +69,9 @@ app.post("/api/generate", async (req, res) => {
       .slice(0, 19);
     const safeCrime = (formData.crimeName || "신청서").replace(/[\\/:*?"<>|]/g, "");
     const fileName = `압수수색영장신청서_${safeCrime}_${stamp}.hwpx`;
-    fs.writeFileSync(path.join(OUTPUT_DIR, fileName), buf);
 
+    // 인적사항이 포함될 수 있으므로 이 PC에도 사본을 남기지 않는다.
+    // 다운로드되는 파일 하나가 유일한 산출물이다.
     res.setHeader("Content-Type", "application/octet-stream");
     res.setHeader(
       "Content-Disposition",
