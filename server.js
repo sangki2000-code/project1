@@ -51,6 +51,7 @@ app.post("/api/generate", async (req, res) => {
       seizureItems: body.seizureItems || "",
       searchPlace: body.searchPlace || "",
       crimeFacts: body.crimeFacts || "",
+      crimeCircumstances: body.crimeCircumstances || "",
       over7DaysReason: body.over7DaysReason || "",
       multipleWarrantsReason: body.multipleWarrantsReason || "",
       nightExecutionReason: body.nightExecutionReason || "",
