@@ -15,6 +15,9 @@
   --level2-soft:#f6ddb3;
   --level3:#5b3aa8;
   --level3-soft:#e2d9f5;
+  /* 일반 안내(경고가 아닌) 배너 톤 */
+  --info:#2b5f9c;
+  --info-soft:#dce6f1;
 }
 *{box-sizing:border-box;}
 body{
@@ -27,12 +30,15 @@ body{
 .page{max-width:760px;margin:0 auto;}
 
 .hero{margin-bottom:20px;}
+.hero-top{display:flex;align-items:center;gap:14px;}
+.org-logo{height:44px;width:auto;max-width:120px;object-fit:contain;flex-shrink:0;}
 .eyebrow{
   font-size:11px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--ink-muted);margin:0 0 6px;
 }
 h1{font-size:26px;margin:0 0 6px;}
 .sub{color:var(--ink-muted);margin:0;font-size:14px;line-height:1.6;}
+.credit{color:var(--ink-muted);margin:8px 0 0;font-size:12px;}
 
 .notice{
   background:var(--accent-soft);
@@ -204,6 +210,13 @@ button.primary{
 button.primary:disabled{opacity:.6;cursor:default;}
 #status{font-size:13px;color:var(--ink-muted);}
 #status.err{color:var(--accent);}
+
+/* 이 도구의 취지 안내 — 경고가 아닌 일반 정보 톤 */
+.notice-info{
+  background:var(--info-soft);
+  border-left:3px solid var(--info);
+  color:var(--ink);
+}
 
 /* 민감정보 카드/배너 — 일반 안내와 시각적으로 구분되는 경고 톤 */
 .notice-danger{
