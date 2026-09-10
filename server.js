@@ -51,6 +51,7 @@ app.post("/api/generate", async (req, res) => {
       suspectJob: body.suspectJob || "",
       suspectAddress: body.suspectAddress || "",
       defenseCounsel: body.defenseCounsel || "",
+      crimeFacts: body.crimeFacts || "",
       seizureItems: body.seizureItems || "",
       searchPlace: body.searchPlace || "",
       crimeContext: body.crimeContext || "",

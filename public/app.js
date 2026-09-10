@@ -6,16 +6,27 @@
     const statusEl = document.getElementById("status");
     const generateBtn = document.getElementById("generateBtn");
 
-    function renderChips(container, items, mode) {
+    function renderChips(container, items, mode, onSelect) {
       container.innerHTML = "";
       items.forEach((text) => {
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "chip";
         btn.textContent = text;
-        btn.addEventListener("click", () => applyChip(container, text, mode));
+        btn.addEventListener("click", () => {
+          applyChip(container, text, mode);
+          if (onSelect) onSelect(text);
+        });
         container.appendChild(btn);
       });
+    }
+
+    function fillCrimeFactsExample(crimeFactsExamples, crimeName) {
+      const example = crimeFactsExamples[crimeName];
+      if (!example) return;
+      const crimeFactsField = form.elements["crimeFacts"];
+      if (!crimeFactsField) return;
+      crimeFactsField.value = example;
     }
 
     function appendLine(field, text) {
@@ -144,10 +155,12 @@
     fetch("/api/presets")
       .then((r) => r.json())
       .then((presets) => {
+        const crimeFactsExamples = presets.CRIME_FACTS_EXAMPLES || {};
         renderChips(
           document.querySelector('[data-chips-for="crimeName"]'),
           presets.CRIME_NAME_PRESETS,
-          "replace"
+          "replace",
+          (crimeName) => fillCrimeFactsExample(crimeFactsExamples, crimeName)
         );
         renderChips(
           document.querySelector('[data-chips-for="seizureItems"]'),
