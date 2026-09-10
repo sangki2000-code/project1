@@ -59,6 +59,67 @@
     wireAddressAdd("addResidence", "residenceAddr", "피의자의 주거지");
     wireAddressAdd("addWorkplace", "workplaceAddr", "피의자가 운영하는 사업장");
 
+    function setupEvidencePicker(categories) {
+      const groupsEl = document.getElementById("evidenceGroups");
+      const itemsEl = document.getElementById("evidenceItems");
+      const manualInput = document.getElementById("evidenceManualInput");
+      const manualAddBtn = document.getElementById("evidenceManualAdd");
+      if (!groupsEl || !itemsEl || !manualInput || !manualAddBtn) return;
+
+      let selectedGroup = null;
+
+      function renderItems() {
+        itemsEl.innerHTML = "";
+        if (!selectedGroup) return;
+        if (!selectedGroup.items.length) {
+          const hint = document.createElement("span");
+          hint.className = "hint";
+          hint.textContent = '"' + selectedGroup.group + '" 항목은 아래 입력칸에 직접 입력해서 추가하세요.';
+          itemsEl.appendChild(hint);
+          return;
+        }
+        selectedGroup.items.forEach((item) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "chip";
+          btn.textContent = item;
+          btn.addEventListener("click", () => {
+            appendLine(form.elements["crimeContext"], selectedGroup.group + " : " + item);
+          });
+          itemsEl.appendChild(btn);
+        });
+      }
+
+      groupsEl.innerHTML = "";
+      categories.forEach((cat) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "chip";
+        btn.textContent = cat.group;
+        btn.addEventListener("click", () => {
+          selectedGroup = cat;
+          groupsEl.querySelectorAll(".chip").forEach((c) => c.classList.remove("chip-selected"));
+          btn.classList.add("chip-selected");
+          renderItems();
+        });
+        groupsEl.appendChild(btn);
+      });
+
+      manualAddBtn.addEventListener("click", () => {
+        const value = manualInput.value.trim();
+        if (!value) return;
+        appendLine(form.elements["crimeContext"], selectedGroup ? selectedGroup.group + " : " + value : value);
+        manualInput.value = "";
+        manualInput.focus();
+      });
+      manualInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          manualAddBtn.click();
+        }
+      });
+    }
+
     fetch("/api/presets")
       .then((r) => r.json())
       .then((presets) => {
@@ -77,6 +138,7 @@
           presets.SEARCH_PLACE_PRESETS,
           "append-line"
         );
+        setupEvidencePicker(presets.EVIDENCE_CATEGORIES || []);
       })
       .catch(() => {
         statusEl.textContent = "프리셋을 불러오지 못했습니다 (직접 입력은 가능합니다).";
