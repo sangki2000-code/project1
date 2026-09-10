@@ -176,6 +176,13 @@ button.primary:disabled{opacity:.6;cursor:default;}
   border-left:3px solid var(--accent);
   color:var(--ink);
 }
+.notice-info{
+  background:var(--surface-sunken, #f6f7f2);
+  border-left:3px solid var(--ink-muted);
+  color:var(--ink);
+}
+.notice-info ul{margin:6px 0 0;padding-left:18px;}
+.notice-info li{margin:2px 0;}
 .card-danger{
   border:1px solid var(--accent);
   background:linear-gradient(var(--accent-soft), var(--accent-soft)) left top / 4px 100% no-repeat, var(--surface);
