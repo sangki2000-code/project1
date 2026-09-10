@@ -5,19 +5,23 @@
   const statusEl = document.getElementById("status");
   const generateBtn = document.getElementById("generateBtn");
 
-  function renderChips(container, items, mode) {
+  function renderChips(container, items, mode, exampleMap) {
     container.innerHTML = "";
     items.forEach((text) => {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "chip";
+      if (exampleMap && exampleMap[text]) {
+        btn.classList.add("chip-example");
+        btn.title = "클릭하면 범죄사실 작성례가 자동으로 채워집니다.";
+      }
       btn.textContent = text;
-      btn.addEventListener("click", () => applyChip(container, text, mode));
+      btn.addEventListener("click", () => applyChip(container, text, mode, exampleMap));
       container.appendChild(btn);
     });
   }
 
-  function applyChip(container, text, mode) {
+  function applyChip(container, text, mode, exampleMap) {
     const fieldName = container.dataset.chipsFor;
     const field = form.elements[fieldName];
     if (!field) return;
@@ -28,6 +32,27 @@
       field.value = text;
     }
     field.focus();
+
+    if (fieldName === "crimeName" && exampleMap && exampleMap[text]) {
+      fillCrimeFactsExample(text, exampleMap[text]);
+    }
+  }
+
+  function fillCrimeFactsExample(crimeName, exampleText) {
+    const crimeFactsField = form.elements["crimeFacts"];
+    if (!crimeFactsField) return;
+    const current = crimeFactsField.value.trim();
+    if (current && current !== exampleText.trim()) {
+      const ok = window.confirm(
+        '"' + crimeName + '" 작성례로 범죄사실 칸을 채우면 지금 입력된 내용이 지워집니다. 계속할까요?'
+      );
+      if (!ok) return;
+    }
+    crimeFactsField.value = exampleText;
+    crimeFactsField.focus();
+    statusEl.classList.remove("err");
+    statusEl.textContent =
+      "작성례를 불러왔습니다. 실제 사건의 일시ㆍ장소ㆍ금액 등으로 반드시 고쳐 쓰세요.";
   }
 
   fetch("/api/presets")
@@ -36,7 +61,8 @@
       renderChips(
         document.querySelector('[data-chips-for="crimeName"]'),
         presets.CRIME_NAME_PRESETS,
-        "replace"
+        "replace",
+        presets.CRIME_FACTS_EXAMPLES
       );
       renderChips(
         document.querySelector('[data-chips-for="seizureItems"]'),
