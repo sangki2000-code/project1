@@ -21,12 +21,22 @@
       });
     }
 
+    let lastAutoFilledCrimeFacts = null;
+
     function fillCrimeFactsExample(crimeFactsExamples, crimeName) {
-      const example = crimeFactsExamples[crimeName];
-      if (!example) return;
       const crimeFactsField = form.elements["crimeFacts"];
       if (!crimeFactsField) return;
-      crimeFactsField.value = example;
+      const example = crimeFactsExamples[crimeName] || "";
+      if (example) {
+        crimeFactsField.value = example;
+        lastAutoFilledCrimeFacts = example;
+      } else if (crimeFactsField.value === lastAutoFilledCrimeFacts) {
+        // 다른 죄명 칩을 눌러 채워졌던 작성례가 그대로 남아있는 경우에만 비운다.
+        // 사용자가 그 내용을 직접 고쳐 썼다면(=더 이상 자동채움 값과 일치하지
+        // 않으면) 건드리지 않는다.
+        crimeFactsField.value = "";
+        lastAutoFilledCrimeFacts = null;
+      }
     }
 
     function appendLine(field, text) {
