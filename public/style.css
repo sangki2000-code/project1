@@ -128,6 +128,11 @@ textarea{resize:vertical;font-family:inherit;line-height:1.6;}
 .chip-example{border-color:var(--accent);background:var(--accent-soft);}
 .chip-example::before{content:"📄 ";}
 
+.chip-selected{border-color:var(--accent);background:var(--accent);color:#fdf6f4;}
+
+.evidence-manual{display:flex;gap:8px;margin-bottom:10px;}
+.evidence-manual input{flex:1;}
+
 .actions{display:flex;align-items:center;gap:14px;margin-top:8px;}
 button.primary{
   font:inherit;font-size:14.5px;font-weight:600;

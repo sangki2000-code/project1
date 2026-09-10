@@ -109,6 +109,20 @@
           <textarea name="crimeFacts" rows="8" placeholder="범죄사실을 구체적으로 서술하세요."></textarea>
         </span>
       </label>
+
+      <label class="block">범죄혐의를 인정할 만한 정황 (증거관계)
+        <p class="hint">구분을 먼저 클릭하고, 이어서 나오는 세부 항목을 클릭하면 아래 칸에 "구분 : 항목"으로 한 줄씩 추가됩니다. 목록에 없으면 직접 입력해서 추가하세요.</p>
+        <div class="chips" id="evidenceGroups"></div>
+        <div class="chips" id="evidenceItems"></div>
+        <div class="evidence-manual">
+          <input type="text" id="evidenceManualInput" placeholder="목록에 없는 항목은 여기에 직접 입력" />
+          <button type="button" id="evidenceManualAdd" class="chip">추가</button>
+        </div>
+        <span class="tip-anchor">
+          <span class="tip-bubble">피의자의 범죄혐의를 뒷받침하는 인적·물적 증거를 적어요. 위 구분ㆍ항목을 클릭해 추가하거나 직접 입력해도 됩니다.</span>
+          <textarea name="crimeCircumstances" rows="6" placeholder="예) 금융자료 : 계좌거래내역"></textarea>
+        </span>
+      </label>
     </section>
 
     <details class="card">
