@@ -128,7 +128,7 @@
           btn.className = "chip chip-level3";
           btn.textContent = item;
           btn.addEventListener("click", () => {
-            appendLine(form.elements["crimeContext"], selectedGroup.group + " : " + item);
+            appendLine(form.elements["crimeContext"], item);
           });
           itemsEl.appendChild(btn);
         });
@@ -172,7 +172,7 @@
       manualAddBtn.addEventListener("click", () => {
         const value = manualInput.value.trim();
         if (!value) return;
-        appendLine(form.elements["crimeContext"], selectedGroup ? selectedGroup.group + " : " + value : value);
+        appendLine(form.elements["crimeContext"], value);
         manualInput.value = "";
         manualInput.focus();
       });

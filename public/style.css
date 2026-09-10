@@ -7,13 +7,14 @@
   --accent:#9c2b1f;
   --accent-soft:#f1ddd4;
   --focus:#7a2118;
-  /* 증거관계 대분류/중분류/세부항목 단계별 구분 색 */
+  /* 증거관계 대분류/중분류/세부항목 단계별 구분 색 — 서로 뚜렷이 대비되도록
+     빨강(대분류) · 주황(중분류) · 보라(세부항목)로 색상환에서 멀리 떨어뜨렸다. */
   --level1:#9c2b1f;
   --level1-soft:#f1ddd4;
-  --level2:#2b5f9c;
-  --level2-soft:#dce6f1;
-  --level3:#3d7a3f;
-  --level3-soft:#dcebdc;
+  --level2:#a15a00;
+  --level2-soft:#f6ddb3;
+  --level3:#5b3aa8;
+  --level3-soft:#e2d9f5;
 }
 *{box-sizing:border-box;}
 body{
@@ -163,17 +164,19 @@ textarea{resize:vertical;font-family:inherit;line-height:1.6;}
 
 .chip-selected{border-color:var(--accent);background:var(--accent);color:#fdf6f4;}
 
-/* 증거관계 3단계 선택(대분류/중분류/세부항목) 색상 구분 */
-.chip-level1{border-color:var(--level1);color:var(--level1);}
-.chip-level1:hover{border-color:var(--level1);background:var(--level1-soft);color:var(--level1);}
+/* 증거관계 3단계 선택(대분류/중분류/세부항목) 색상 구분 — 단계마다 기본
+   상태부터 옅은 배경을 채워, 테두리색만으로 구분하던 것보다 한눈에
+   뚜렷이 구별되게 했다. */
+.chip-level1{border-color:var(--level1);background:var(--level1-soft);color:var(--level1);}
+.chip-level1:hover{border-color:var(--level1);color:var(--level1);}
 .chip-level1.chip-selected{background:var(--level1);border-color:var(--level1);color:#fdf6f4;}
 
-.chip-level2{border-color:var(--level2);color:var(--level2);}
-.chip-level2:hover{border-color:var(--level2);background:var(--level2-soft);color:var(--level2);}
-.chip-level2.chip-selected{background:var(--level2);border-color:var(--level2);color:#f4f8fd;}
+.chip-level2{border-color:var(--level2);background:var(--level2-soft);color:var(--level2);}
+.chip-level2:hover{border-color:var(--level2);color:var(--level2);}
+.chip-level2.chip-selected{background:var(--level2);border-color:var(--level2);color:#fdf6ec;}
 
-.chip-level3{border-color:var(--level3);color:var(--level3);}
-.chip-level3:hover{border-color:var(--level3);background:var(--level3-soft);color:var(--level3);}
+.chip-level3{border-color:var(--level3);background:var(--level3-soft);color:var(--level3);}
+.chip-level3:hover{border-color:var(--level3);color:var(--level3);}
 
 .legend-dot{
   display:inline-block;
