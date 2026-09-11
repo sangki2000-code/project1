@@ -126,6 +126,27 @@ textarea{resize:vertical;font-family:inherit;line-height:1.6;}
 
 .hint{font-size:12.5px;color:var(--ink-muted);margin:4px 0 10px;}
 
+/* 별지에 실제로 채워지는 핵심 항목의 라벨 — 색이 채워진 배지로 만들어 주변
+   글씨와 확실히 구분되게 한다(글자 색만 바꾸는 정도로는 옅어서 눈에 잘 안
+   띄었다). 이미 "이 도구를 만든 이유" 안내에 쓰는 --info 파랑을 그대로 써서
+   화면 전체 색상 언어와 통일했다. */
+.field-title{
+  display:inline-block;
+  color:#ffffff;
+  background:var(--info);
+  font-weight:800;
+  font-size:15.5px;
+  line-height:1.5;
+  padding:5px 14px;
+  border-radius:6px;
+  margin-bottom:2px;
+}
+.field-title .section-tag{
+  background:rgba(255,255,255,.92);
+  border-color:rgba(255,255,255,.92);
+  color:var(--info);
+}
+
 .section-tag{
   font-size:10.5px;font-weight:600;
   color:var(--ink-muted);

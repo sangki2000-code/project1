@@ -37,7 +37,16 @@ const PORT = process.env.PORT || 4173;
 
 const app = express();
 app.use(express.json({ limit: "2mb" }));
-app.use(express.static(path.join(__dirname, "public")));
+// zip으로 새 버전을 받아 같은 포트(localhost:4173)로 다시 열었을 때 브라우저가
+// 이전 실행 때 캐시해 둔 style.css/app.js를 그대로 쓰는 바람에 업데이트가 안
+// 보이는 경우가 있어, 이 화면 파일들은 항상 새로 받아오게 한다.
+app.use(
+  express.static(path.join(__dirname, "public"), {
+    etag: false,
+    lastModified: false,
+    setHeaders: (res) => res.setHeader("Cache-Control", "no-store"),
+  })
+);
 
 app.get("/api/presets", (req, res) => {
   res.json(presets);

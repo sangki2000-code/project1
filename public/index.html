@@ -126,7 +126,8 @@
       <h2>4. 별지로 작성되는 항목</h2>
       <p class="hint">아래 항목들은 신청서 본문에는 "별지1", "별지2", "별지3"로 표시되고, 실제 내용은 문서 뒤쪽 별지 페이지에 들어갑니다.</p>
 
-      <label class="block">압수할 물건 <span class="section-tag">별지3</span>
+      <label class="block">
+        <span class="field-title">압수할 물건 <span class="section-tag">별지3</span></span>
         <div class="chips" data-chips-for="seizureItems" data-mode="append-line"></div>
         <span class="tip-anchor">
           <span class="tip-bubble">기간을 꼭 넣으세요(예: 2026. 1.경부터 현재까지) — 기간이 없으면 관련성 부족으로 기각될 수 있어요. "~ 등", "~ 일체"처럼 포괄적으로 쓰지 말고 물건을 구체적으로 특정하세요. 한 줄에 하나씩 적으면 여러 개일 때 자동으로 1. 2. 번호가 붙습니다.</span>
@@ -134,7 +135,8 @@
         </span>
       </label>
 
-      <label class="block">수색ㆍ검증할 장소, 신체 또는 물건 <span class="section-tag">별지3</span>
+      <label class="block">
+        <span class="field-title">수색ㆍ검증할 장소, 신체 또는 물건 <span class="section-tag">별지3</span></span>
         <div class="addr-inputs">
           <div class="addr-row">
             <button type="button" class="chip" id="useSuspectAddress" disabled>위 "1. 피의자 인적사항"의 주거 주소와 동일 (클릭 시 자동 입력)</button>
@@ -155,7 +157,8 @@
         </span>
       </label>
 
-      <label class="block">범죄사실 <span class="section-tag">별지1</span>
+      <label class="block">
+        <span class="field-title">범죄사실 <span class="section-tag">별지1</span></span>
         <p class="hint">위 "3. 수신 검찰청ㆍ죄명"에서 죄명 칩을 클릭하면, 해당 죄명의 작성례가 있는 경우 아래 칸에 자동으로 채워집니다(기존 입력 내용은 덮어씌워집니다). 반드시 실제 사건의 일시ㆍ장소ㆍ금액 등 구체적 사실로 고쳐 쓰세요. 작성례가 없는 죄명이거나 비워두면, 생성된 문서에는 "(작성 안내) 피의자의 직업, 금지규정, 위반행위 결과의 순서로 기재"라는 기본 안내 문구가 대신 표시됩니다.</p>
         <span class="tip-anchor">
           <span class="tip-bubble">피의자의 직업 → 금지규정 → 위반행위 결과 순서로 적으세요.</span>
@@ -163,7 +166,8 @@
         </span>
       </label>
 
-      <label class="block">압수수색을 필요로 하는 사유 — 범죄혐의의 정황 <span class="section-tag">별지2</span>
+      <label class="block">
+        <span class="field-title">압수수색을 필요로 하는 사유 — 범죄혐의의 정황 <span class="section-tag">별지2</span></span>
         <p class="hint"><span class="legend-dot legend-dot-1"></span>대분류 → <span class="legend-dot legend-dot-2"></span>중분류 순서로 클릭해 범위를 좁힌 뒤, <span class="legend-dot legend-dot-3"></span>세부항목을 클릭하면 그 항목만 아래 칸에 한 줄씩 추가됩니다(중분류 이름은 입력되지 않습니다). 목록에 없으면 직접 입력해서 추가하세요.</p>
         <div class="chips" id="evidenceCategories"></div>
         <div class="chips" id="evidenceGroups"></div>
@@ -178,7 +182,8 @@
         </span>
       </label>
 
-      <label class="block">압수수색을 필요로 하는 사유 — 압수수색의 필요성 <span class="section-tag">별지2</span>
+      <label class="block">
+        <span class="field-title">압수수색을 필요로 하는 사유 — 압수수색의 필요성 <span class="section-tag">별지2</span></span>
         <span class="tip-anchor">
           <span class="tip-bubble">왜 임의제출이 아니라 압수·수색·검증이어야 하는지 적으세요(증거인멸 우려, 임의제출 거부 등).</span>
           <textarea name="necessityReason" rows="3" placeholder="예: 임의제출을 요구할 경우 증거를 인멸할 우려가 있어 압수수색이 필요함"></textarea>
