@@ -7,6 +7,16 @@
   --accent:#9c2b1f;
   --accent-soft:#f1ddd4;
   --focus:#7a2118;
+  /* 증거관계 대분류/중분류/세부항목 단계별 구분 색 — 서로 뚜렷이 대비되도록
+     빨강(대분류) · 주황(중분류) · 보라(세부항목)로 색상환에서 멀리 떨어뜨렸다. */
+  --level1:#9c2b1f;
+  --level1-soft:#f1ddd4;
+  --level2:#a15a00;
+  --level2-soft:#f6ddb3;
+  --level3:#5b3aa8;
+  --level3-soft:#e2d9f5;
+  /* 별지 작성 항목 라벨 배지 색 */
+  --info:#2b5f9c;
 }
 *{box-sizing:border-box;}
 body{
@@ -19,12 +29,15 @@ body{
 .page{max-width:760px;margin:0 auto;}
 
 .hero{margin-bottom:20px;}
+.hero-top{display:flex;align-items:center;gap:14px;}
+.org-logo{height:44px;width:auto;max-width:120px;object-fit:contain;flex-shrink:0;}
 .eyebrow{
   font-size:11px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--ink-muted);margin:0 0 6px;
 }
 h1{font-size:26px;margin:0 0 6px;}
 .sub{color:var(--ink-muted);margin:0;font-size:14px;line-height:1.6;}
+.credit{color:var(--ink-muted);margin:8px 0 0;font-size:12px;}
 
 .notice{
   background:var(--accent-soft);
@@ -112,6 +125,27 @@ textarea{resize:vertical;font-family:inherit;line-height:1.6;}
 
 .hint{font-size:12.5px;color:var(--ink-muted);margin:4px 0 10px;}
 
+/* 별지에 실제로 채워지는 핵심 항목의 라벨 — 색이 채워진 배지로 만들어 주변
+   글씨와 확실히 구분되게 한다(글자 색만 바꾸는 정도로는 옅어서 눈에 잘 안
+   띄었다). 이미 "이 도구를 만든 이유" 안내에 쓰는 --info 파랑을 그대로 써서
+   화면 전체 색상 언어와 통일했다. */
+.field-title{
+  display:inline-block;
+  color:#ffffff;
+  background:var(--info);
+  font-weight:800;
+  font-size:15.5px;
+  line-height:1.5;
+  padding:5px 14px;
+  border-radius:6px;
+  margin-bottom:2px;
+}
+.field-title .section-tag{
+  background:rgba(255,255,255,.92);
+  border-color:rgba(255,255,255,.92);
+  color:var(--info);
+}
+
 .section-tag{
   font-size:10.5px;font-weight:600;
   color:var(--ink-muted);
@@ -151,8 +185,35 @@ textarea{resize:vertical;font-family:inherit;line-height:1.6;}
 }
 .chip:hover{border-color:var(--accent);color:var(--accent);}
 .chip:focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
+.chip:disabled{opacity:.5;cursor:not-allowed;}
+.chip:disabled:hover{border-color:var(--rule);color:var(--ink);}
 
 .chip-selected{border-color:var(--accent);background:var(--accent);color:#fdf6f4;}
+
+/* 증거관계 3단계 선택(대분류/중분류/세부항목) 색상 구분 — 단계마다 기본
+   상태부터 옅은 배경을 채워, 테두리색만으로 구분하던 것보다 한눈에
+   뚜렷이 구별되게 했다. */
+.chip-level1{border-color:var(--level1);background:var(--level1-soft);color:var(--level1);}
+.chip-level1:hover{border-color:var(--level1);color:var(--level1);}
+.chip-level1.chip-selected{background:var(--level1);border-color:var(--level1);color:#fdf6f4;}
+
+.chip-level2{border-color:var(--level2);background:var(--level2-soft);color:var(--level2);}
+.chip-level2:hover{border-color:var(--level2);color:var(--level2);}
+.chip-level2.chip-selected{background:var(--level2);border-color:var(--level2);color:#fdf6ec;}
+
+.chip-level3{border-color:var(--level3);background:var(--level3-soft);color:var(--level3);}
+.chip-level3:hover{border-color:var(--level3);color:var(--level3);}
+
+.legend-dot{
+  display:inline-block;
+  width:8px;height:8px;
+  border-radius:50%;
+  margin:0 3px 0 0;
+  vertical-align:middle;
+}
+.legend-dot-1{background:var(--level1);}
+.legend-dot-2{background:var(--level2);}
+.legend-dot-3{background:var(--level3);}
 
 .evidence-manual{display:flex;gap:8px;margin-bottom:10px;}
 .evidence-manual input{flex:1;}
@@ -176,6 +237,7 @@ button.primary:disabled{opacity:.6;cursor:default;}
   border-left:3px solid var(--accent);
   color:var(--ink);
 }
+/* 이 도구의 한계 안내 — 경고가 아닌 중립적인 안내 톤 */
 .notice-info{
   background:var(--surface-sunken, #f6f7f2);
   border-left:3px solid var(--ink-muted);

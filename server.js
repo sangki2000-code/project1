@@ -1,15 +1,52 @@
 "use strict";
 
 const path = require("path");
+const fs = require("fs");
+const os = require("os");
 const express = require("express");
-const { generateHwpxBuffer } = require("./lib/generateHwpx");
+const yazl = require("yazl");
+const { generateHwpxBuffers } = require("./lib/generateHwpx");
 const presets = require("./lib/fields");
+
+/** { name, data }[] -> Buffer, zipped. 별지 제55호서식은 규정 서식이라 순서를
+ * 바꿀 수 없어, "신청서(+청구서)"와 "별지1ㆍ2ㆍ3"를 각각 다른 .hwpx 파일로
+ * 만들고 이 zip 하나로 묶어 한 번에 내려받게 한다. */
+function zipFiles(files) {
+  return new Promise((resolve, reject) => {
+    const zipfile = new yazl.ZipFile();
+    for (const f of files) {
+      zipfile.addBuffer(f.data, f.name, { mtime: new Date(1980, 0, 1), mode: 0o644 });
+    }
+    const tmpOut = path.join(
+      os.tmpdir(),
+      "hwpx-zip-" + Date.now() + "-" + Math.random().toString(16).slice(2) + ".zip"
+    );
+    const out = fs.createWriteStream(tmpOut);
+    out.on("close", () => {
+      const buf = fs.readFileSync(tmpOut);
+      fs.unlinkSync(tmpOut);
+      resolve(buf);
+    });
+    out.on("error", reject);
+    zipfile.outputStream.pipe(out);
+    zipfile.end();
+  });
+}
 
 const PORT = process.env.PORT || 4173;
 
 const app = express();
 app.use(express.json({ limit: "2mb" }));
-app.use(express.static(path.join(__dirname, "public")));
+// zip으로 새 버전을 받아 같은 포트(localhost:4173)로 다시 열었을 때 브라우저가
+// 이전 실행 때 캐시해 둔 style.css/app.js를 그대로 쓰는 바람에 업데이트가 안
+// 보이는 경우가 있어, 이 화면 파일들은 항상 새로 받아오게 한다.
+app.use(
+  express.static(path.join(__dirname, "public"), {
+    etag: false,
+    lastModified: false,
+    setHeaders: (res) => res.setHeader("Cache-Control", "no-store"),
+  })
+);
 
 app.get("/api/presets", (req, res) => {
   res.json(presets);
@@ -51,6 +88,7 @@ app.post("/api/generate", async (req, res) => {
       suspectJob: body.suspectJob || "",
       suspectAddress: body.suspectAddress || "",
       defenseCounsel: body.defenseCounsel || "",
+      crimeFacts: body.crimeFacts || "",
       seizureItems: body.seizureItems || "",
       searchPlace: body.searchPlace || "",
       crimeContext: body.crimeContext || "",
@@ -61,23 +99,31 @@ app.post("/api/generate", async (req, res) => {
       bodyExamInfo: body.bodyExamInfo || "",
     };
 
-    const buf = await generateHwpxBuffer(formData);
+    const { applicationBuffer, attachmentBuffer } = await generateHwpxBuffers(formData);
 
     const stamp = new Date()
       .toISOString()
       .replace(/[:T]/g, "-")
       .slice(0, 19);
     const safeCrime = (formData.crimeName || "신청서").replace(/[\\/:*?"<>|]/g, "");
-    const fileName = `압수수색영장신청서_${safeCrime}_${stamp}.hwpx`;
+    const zipName = `압수수색영장신청서_${safeCrime}_${stamp}.zip`;
+
+    // 별지 제55호서식은 규정 서식이라 신청서ㆍ청구서ㆍ별지의 순서를 바꿀 수
+    // 없다. 그래서 신청서(+청구서)와 별지1ㆍ2ㆍ3을 각각 별도 .hwpx 파일로
+    // 만들어 zip 하나에 담아 내려보낸다.
+    const zipBuf = await zipFiles([
+      { name: `압수수색영장신청서_${safeCrime}_${stamp}.hwpx`, data: applicationBuffer },
+      { name: `별지_${safeCrime}_${stamp}.hwpx`, data: attachmentBuffer },
+    ]);
 
     // 인적사항이 포함될 수 있으므로 이 PC에도 사본을 남기지 않는다.
-    // 다운로드되는 파일 하나가 유일한 산출물이다.
-    res.setHeader("Content-Type", "application/octet-stream");
+    // 다운로드되는 파일이 유일한 산출물이다.
+    res.setHeader("Content-Type", "application/zip");
     res.setHeader(
       "Content-Disposition",
-      "attachment; filename*=UTF-8''" + encodeURIComponent(fileName)
+      "attachment; filename*=UTF-8''" + encodeURIComponent(zipName)
     );
-    res.send(buf);
+    res.send(zipBuf);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message || String(err) });
