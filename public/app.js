@@ -231,7 +231,7 @@
         const blob = await res.blob();
         const disposition = res.headers.get("Content-Disposition") || "";
         const match = /filename\*=UTF-8''([^;]+)/.exec(disposition);
-        const fileName = match ? decodeURIComponent(match[1]) : "압수수색영장신청서.hwpx";
+        const fileName = match ? decodeURIComponent(match[1]) : "압수수색영장신청서.zip";
 
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
