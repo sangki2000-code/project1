@@ -192,9 +192,11 @@
 
       <label class="block">
         <span class="field-title">압수수색을 필요로 하는 사유 — 압수수색의 필요성 <span class="section-tag">별지2</span></span>
+        <p class="hint">아래에서 해당하는 유형을 클릭하면(마우스를 올리면 취지가 먼저 뜹니다) 그 유형의 기재례가 필요성 칸에 문단으로 추가됩니다. 여러 유형이 겹치면 여러 개를 눌러 이어 붙이세요. 대괄호 [ ] 부분을 포함해 문구 전체를 실제 사건 내용에 맞게 반드시 고쳐 쓰세요.</p>
+        <div class="chips necessity-type-chips" id="necessityReasonTypes"></div>
         <span class="tip-anchor">
-          <span class="tip-bubble">왜 임의제출이 아니라 압수·수색·검증이어야 하는지 적으세요(증거인멸 우려, 임의제출 거부 등).</span>
-          <textarea name="necessityReason" rows="3" placeholder="예: 임의제출을 요구할 경우 증거를 인멸할 우려가 있어 압수수색이 필요함"></textarea>
+          <span class="tip-bubble">증거인멸 우려, 임의제출 거부 예상, 전자정보의 삭제 용이성 등 구체적인 이유를 적으세요.</span>
+          <textarea name="necessityReason" rows="6" placeholder="위 유형을 클릭해 기재례를 불러오거나 직접 입력하세요."></textarea>
         </span>
       </label>
     </section>
