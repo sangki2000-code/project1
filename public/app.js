@@ -204,6 +204,11 @@
           presets.SEARCH_PLACE_PRESETS,
           "append-line"
         );
+        renderChips(
+          document.querySelector('[data-chips-for="necessityReason"]'),
+          presets.NECESSITY_REASON_PRESETS,
+          "append-line"
+        );
         setupEvidencePicker(presets.EVIDENCE_CATEGORIES || []);
       })
       .catch(() => {
