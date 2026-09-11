@@ -184,6 +184,32 @@
       });
     }
 
+    function setupNecessityReasonTypes(types) {
+      const container = document.getElementById("necessityReasonTypes");
+      if (!container) return;
+      container.innerHTML = "";
+      types.forEach((t) => {
+        const anchor = document.createElement("span");
+        anchor.className = "tip-anchor necessity-type-anchor";
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "chip";
+        btn.textContent = t.type;
+        btn.addEventListener("click", () => {
+          appendLine(form.elements["necessityReason"], t.example);
+        });
+
+        const bubble = document.createElement("span");
+        bubble.className = "tip-bubble tip-bubble-wide";
+        bubble.textContent = t.purpose;
+
+        anchor.appendChild(btn);
+        anchor.appendChild(bubble);
+        container.appendChild(anchor);
+      });
+    }
+
     fetch("/api/presets")
       .then((r) => r.json())
       .then((presets) => {
@@ -204,11 +230,7 @@
           presets.SEARCH_PLACE_PRESETS,
           "append-line"
         );
-        renderChips(
-          document.querySelector('[data-chips-for="necessityReason"]'),
-          presets.NECESSITY_REASON_PRESETS,
-          "append-line"
-        );
+        setupNecessityReasonTypes(presets.NECESSITY_REASON_TYPES || []);
         setupEvidencePicker(presets.EVIDENCE_CATEGORIES || []);
       })
       .catch(() => {
