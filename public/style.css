@@ -15,9 +15,8 @@
   --level2-soft:#f6ddb3;
   --level3:#5b3aa8;
   --level3-soft:#e2d9f5;
-  /* 일반 안내(경고가 아닌) 배너 톤 */
+  /* 별지 작성 항목 라벨 배지 색 */
   --info:#2b5f9c;
-  --info-soft:#dce6f1;
 }
 *{box-sizing:border-box;}
 body{
@@ -232,19 +231,20 @@ button.primary:disabled{opacity:.6;cursor:default;}
 #status{font-size:13px;color:var(--ink-muted);}
 #status.err{color:var(--accent);}
 
-/* 이 도구의 취지 안내 — 경고가 아닌 일반 정보 톤 */
-.notice-info{
-  background:var(--info-soft);
-  border-left:3px solid var(--info);
-  color:var(--ink);
-}
-
 /* 민감정보 카드/배너 — 일반 안내와 시각적으로 구분되는 경고 톤 */
 .notice-danger{
   background:var(--accent-soft);
   border-left:3px solid var(--accent);
   color:var(--ink);
 }
+/* 이 도구의 한계 안내 — 경고가 아닌 중립적인 안내 톤 */
+.notice-info{
+  background:var(--surface-sunken, #f6f7f2);
+  border-left:3px solid var(--ink-muted);
+  color:var(--ink);
+}
+.notice-info ul{margin:6px 0 0;padding-left:18px;}
+.notice-info li{margin:2px 0;}
 .card-danger{
   border:1px solid var(--accent);
   background:linear-gradient(var(--accent-soft), var(--accent-soft)) left top / 4px 100% no-repeat, var(--surface);
