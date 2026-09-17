@@ -7,6 +7,7 @@ const express = require("express");
 const yazl = require("yazl");
 const { generateHwpxBuffers } = require("./lib/generateHwpx");
 const presets = require("./lib/fields");
+const { EXECUTION_CHECKLIST } = require("./lib/executionChecklist");
 
 /** { name, data }[] -> Buffer, zipped. 별지 제55호서식은 규정 서식이라 순서를
  * 바꿀 수 없어, "신청서(+청구서)"와 "별지1ㆍ2ㆍ3"를 각각 다른 .hwpx 파일로
@@ -50,6 +51,10 @@ app.use(
 
 app.get("/api/presets", (req, res) => {
   res.json(presets);
+});
+
+app.get("/api/checklist", (req, res) => {
+  res.json({ EXECUTION_CHECKLIST });
 });
 
 function splitDate(isoDate) {

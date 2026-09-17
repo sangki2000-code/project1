@@ -260,3 +260,72 @@ button.primary:disabled{opacity:.6;cursor:default;}
   margin-left:8px;
   vertical-align:middle;
 }
+
+/* 화면 간 이동 탭 (신청서 작성기 / 집행순서 체크리스트) */
+.tool-nav{display:flex;gap:8px;margin-top:14px;}
+.tool-nav-link{
+  font-size:12.5px;font-weight:600;
+  color:var(--ink-muted);
+  background:var(--surface);
+  border:1px solid var(--rule);
+  border-radius:999px;
+  padding:6px 14px;
+  text-decoration:none;
+}
+.tool-nav-link:hover{border-color:var(--accent);color:var(--accent);}
+.tool-nav-link-active{
+  color:#fdf6f4;background:var(--accent);border-color:var(--accent);
+}
+
+/* 영장집행순서 체크리스트 */
+.progress-wrap{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:16px;
+}
+.progress-bar{
+  flex:1;height:8px;
+  background:var(--rule);
+  border-radius:999px;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  background:var(--accent);
+  width:0%;
+  transition:width .15s ease;
+}
+#progressLabel{margin:0;white-space:nowrap;}
+
+.checklist-phase h2{margin-bottom:14px;}
+.checklist-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:10px 0;
+  border-top:1px solid var(--rule);
+  cursor:pointer;
+}
+.checklist-item:first-of-type{border-top:none;}
+.checklist-item input[type=checkbox]{
+  margin-top:3px;
+  width:17px;height:17px;flex-shrink:0;
+  accent-color:var(--accent);
+  cursor:pointer;
+}
+.checklist-item-body{flex:1;}
+.checklist-item-title{font-size:14.5px;font-weight:600;color:var(--ink);}
+.checklist-item-detail{
+  font-size:13px;color:var(--ink-muted);
+  margin:5px 0 0;line-height:1.6;
+  white-space:pre-line;
+}
+.checklist-item-basis{
+  font-size:12px;color:var(--info);
+  margin:5px 0 0;
+}
+.checklist-item-warn{
+  font-size:12px;color:var(--accent);
+  margin:5px 0 0;font-weight:600;
+}
+.checklist-item-done .checklist-item-title{
+  color:var(--ink-muted);
+  text-decoration:line-through;
+}
