@@ -329,3 +329,19 @@ button.primary:disabled{opacity:.6;cursor:default;}
   color:var(--ink-muted);
   text-decoration:line-through;
 }
+
+/* 영장집행 후 서식 작성기 — 참여인/압수목록 품목 반복 입력 행 */
+.repeat-row{display:flex;gap:8px;margin-bottom:8px;align-items:center;}
+.repeat-row input{
+  flex:1;min-width:0;
+  font:inherit;font-size:14px;color:var(--ink);
+  border:1px solid var(--rule);
+  border-radius:6px;
+  padding:9px 11px;
+  background:#fff;
+}
+.repeat-row input:focus{
+  outline:none;border-color:var(--focus);
+  box-shadow:0 0 0 3px var(--accent-soft);
+}
+.repeat-row .remove-row{white-space:nowrap;flex-shrink:0;}

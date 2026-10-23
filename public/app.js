@@ -243,6 +243,22 @@
         URL.revokeObjectURL(url);
 
         statusEl.textContent = "생성 완료: " + fileName + " (이 PC에는 별도로 저장되지 않았습니다 — 지금 받은 파일이 유일한 사본입니다)";
+
+        // "3. 집행 후 서식 작성" 화면으로 넘어갈 때 기관명ㆍ피의자 성명ㆍ죄명을
+        // 다시 입력하지 않아도 되도록 sessionStorage에 남긴다. 이 탭을 닫으면
+        // 사라지므로(디스크에 남지 않음) "저장하지 않음" 원칙과 충돌하지 않는다.
+        try {
+          sessionStorage.setItem(
+            "영장신청서_이어쓰기데이터",
+            JSON.stringify({
+              orgName: data.orgName || "",
+              suspectName: data.suspectName || "",
+              crimeName: data.crimeName || "",
+            })
+          );
+        } catch (e) {
+          // 무시 — 이어받기는 편의 기능일 뿐, 실패해도 신청서 생성 자체에는 지장 없음
+        }
       } catch (err) {
         statusEl.classList.add("err");
         const isNetworkError = err instanceof TypeError;

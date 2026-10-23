@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>영장집행 후 서식 작성기</title>
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<div class="page" id="mainPage">
+  <header class="hero">
+    <div class="hero-top">
+      <img src="/org-logo.png" alt="기관 로고" class="org-logo" onerror="this.remove()" />
+      <div>
+        <p class="eyebrow">검사와 특별사법경찰관의 상호협력에 관한 규칙 별지서식 · 로컬 전용</p>
+        <h1>영장집행 후 서식 작성기</h1>
+      </div>
+    </div>
+    <p class="sub">압수ㆍ수색ㆍ검증영장을 집행한 뒤 작성하는 서식을 클릭ㆍ입력만으로 채워 원본과 동일한 레이아웃의 .hwpx 파일(.zip)로 저장합니다.</p>
+    <nav class="tool-nav">
+      <a href="/index.html" class="tool-nav-link">1. 영장신청서 작성</a>
+      <a href="/checklist.html" class="tool-nav-link">2. 영장집행순서 체크리스트</a>
+      <a href="/execution-forms.html" class="tool-nav-link tool-nav-link-active">3. 집행 후 서식 작성</a>
+    </nav>
+  </header>
+
+  <div class="notice notice-info">
+    <strong>이 도구가 하는 일</strong> — 아래 정보를 한 번 입력하면 압수조서ㆍ압수목록ㆍ압수물총목록ㆍ수색조서ㆍ수색결과증명서 5개 서식을 한꺼번에 채워 줍니다.
+    증거물을 발견했으면 <b>압수</b> 관련 서식(압수조서ㆍ압수목록ㆍ압수물총목록)을, 발견하지 못했으면 <b>수색</b> 관련 서식(수색조서ㆍ수색결과증명서)을 쓰고 나머지는 버리면 됩니다.
+    1번 화면(영장신청서 작성)에서 바로 넘어왔다면 기관명ㆍ피의자 성명ㆍ죄명은 자동으로 채워져 있습니다.
+  </div>
+
+  <div class="notice notice-danger">
+    <strong>보안 주의</strong> — 피의자ㆍ참여인 인적사항은 실제 수사 정보입니다. 입력한 내용은 저장되지 않고 생성되는 파일 안에만 담겨 다운로드됩니다(이 PC에 사본을 남기지 않습니다).
+  </div>
+
+  <form id="form">
+
+    <section class="card">
+      <h2>1. 공통 정보</h2>
+      <div class="grid">
+        <label>기관명
+          <input type="text" name="orgName" placeholder="예: 관세청 서울본부세관 조사1과" />
+        </label>
+        <label>피의자 성명
+          <input type="text" name="suspectName" autocomplete="off" />
+        </label>
+        <label>죄명 (피의사건명)
+          <input type="text" name="crimeName" placeholder="예: 관세법위반" />
+        </label>
+        <label>집행 일자
+          <input type="date" name="execDate" />
+        </label>
+        <label>집행 장소
+          <input type="text" name="execPlace" placeholder="예: 서울 강남구 ○○로 1 피의자 운영 사무실" />
+        </label>
+        <label>특별사법경찰관 (집행자)
+          <input type="text" name="officer1Name" placeholder="예: 행정주사 홍길동" />
+        </label>
+        <label>특별사법경찰리 (참여 직원, 있는 경우)
+          <input type="text" name="officer2Name" placeholder="없으면 비워두세요" />
+        </label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>2. 압수 관련 서식 <span class="section-tag">증거물을 발견한 경우</span></h2>
+      <label class="block">압수경위
+        <span class="tip-anchor">
+          <span class="tip-bubble">언제ㆍ어디서ㆍ누구에게 영장을 제시했는지, 어떻게 수색해서 무엇을 발견했는지, 압수 뒤 무엇을 교부했는지 순서대로 적으세요.</span>
+          <textarea name="seizureProcess" rows="4" placeholder="예: 원 일시, 장소에서 현장에 있던 피의자에게 OO지방법원 판사 OOO가 발부한 압수수색검증영장(제OO호)을 제시하고, 피의자를 참여하게 한 뒤 OO을 수색하여 별지 압수목록에 기재한 증거물을 발견하고 이를 압수한 뒤..."></textarea>
+        </span>
+      </label>
+
+      <p class="field-title">참여인 <span class="section-tag">최대 4명</span></p>
+      <div id="participants"></div>
+      <button type="button" id="addParticipant" class="chip">참여인 추가</button>
+
+      <p class="field-title" style="margin-top:18px;">압수목록 품목 <span class="section-tag">최대 7건</span></p>
+      <p class="hint">기종ㆍ시리얼번호ㆍ제조일자 등 나중에도 물건의 동일성을 확인할 수 있도록 구체적으로 적으세요.</p>
+      <div id="items"></div>
+      <button type="button" id="addItem" class="chip">품목 추가</button>
+
+      <p class="field-title" style="margin-top:18px;">소지자 / 소유자 <span class="section-tag">압수목록에 공통 적용</span></p>
+      <p class="hint">보통 피의자 본인입니다. 아래 "피의자 정보와 동일" 버튼으로 채운 뒤 필요한 부분만 고치세요.</p>
+      <button type="button" id="copySuspectToHolder" class="chip">소지자란에 피의자 성명 채우기</button>
+      <div class="grid" style="margin-top:10px;">
+        <label>소지자 성명<input type="text" id="holderName" /></label>
+        <label>소지자 주소<input type="text" id="holderAddress" /></label>
+        <label>소지자 주민등록번호<input type="text" id="holderRRN" /></label>
+        <label>소지자 전화번호<input type="text" id="holderPhone" /></label>
+      </div>
+      <button type="button" id="copyHolderToOwner" class="chip" style="margin-top:10px;">소유자란에 소지자 정보 복사</button>
+      <div class="grid" style="margin-top:10px;">
+        <label>소유자 성명<input type="text" id="ownerName" /></label>
+        <label>소유자 주소<input type="text" id="ownerAddress" /></label>
+        <label>소유자 주민등록번호<input type="text" id="ownerRRN" /></label>
+        <label>소유자 전화번호<input type="text" id="ownerPhone" /></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>3. 수색 관련 서식 <span class="section-tag">증거물을 발견하지 못한 경우</span></h2>
+      <div class="grid">
+        <label>수색장소
+          <input type="text" name="searchPlace" />
+        </label>
+        <label>수색한 신체 개소, 물건
+          <input type="text" name="searchTarget" placeholder="예: 사무실 내 서류함, 컴퓨터" />
+        </label>
+      </div>
+      <label class="block">수색결과
+        <textarea name="searchResult" rows="2" placeholder="예: 혐의 관련 증거물을 발견하지 못함"></textarea>
+      </label>
+      <div class="grid">
+        <label>수색 착수 일시
+          <input type="date" name="searchStartDate" />
+        </label>
+        <label>수색 종료 일시
+          <input type="date" name="searchEndDate" />
+        </label>
+      </div>
+
+      <p class="field-title" style="margin-top:18px;">참여인 (수색조서용) <span class="section-tag">최대 4명, 위 2번과 동일인이면 그대로 둠</span></p>
+      <p class="hint">위 "2. 압수 관련 서식"에 입력한 참여인을 그대로 사용합니다. 수색에만 참여한 사람이 더 있으면 위에서 추가하세요.</p>
+    </section>
+
+    <section class="card">
+      <h2>4. 수색결과 증명서 <span class="section-tag">증거물을 발견하지 못한 경우, 수색받은 자에게 교부</span></h2>
+      <div class="grid">
+        <label>문서번호 (제 __ 호)
+          <input type="text" name="docNo" placeholder="예: 2026-55" />
+        </label>
+        <label>발급 일자
+          <input type="date" name="issueDate" />
+          <span class="hint" style="margin:2px 0 0;">비워두면 집행 일자를 그대로 씁니다.</span>
+        </label>
+        <label>수신인 (증명서를 받는 사람)
+          <input type="text" name="recipientName" />
+          <span class="hint" style="margin:2px 0 0;">비워두면 피의자 성명을 그대로 씁니다.</span>
+        </label>
+      </div>
+    </section>
+
+    <div class="actions">
+      <button type="submit" id="generateBtn" class="primary">서식 생성 (.zip 다운로드)</button>
+      <span id="status" role="status" aria-live="polite"></span>
+    </div>
+    <p class="hint">생성된 파일은 다운로드만 되고, 이 PC에는 별도로 저장되지 않습니다.</p>
+  </form>
+</div>
+<script src="/execution-forms.js"></script>
+</body>
+</html>

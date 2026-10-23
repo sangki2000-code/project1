@@ -6,6 +6,7 @@ const os = require("os");
 const express = require("express");
 const yazl = require("yazl");
 const { generateHwpxBuffers } = require("./lib/generateHwpx");
+const { generateExecutionFormBuffers } = require("./lib/generateExecutionForms");
 const presets = require("./lib/fields");
 const { EXECUTION_CHECKLIST } = require("./lib/executionChecklist");
 
@@ -123,6 +124,77 @@ app.post("/api/generate", async (req, res) => {
 
     // 인적사항이 포함될 수 있으므로 이 PC에도 사본을 남기지 않는다.
     // 다운로드되는 파일이 유일한 산출물이다.
+    res.setHeader("Content-Type", "application/zip");
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename*=UTF-8''" + encodeURIComponent(zipName)
+    );
+    res.send(zipBuf);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message || String(err) });
+  }
+});
+
+app.post("/api/generate-execution-forms", async (req, res) => {
+  try {
+    const body = req.body || {};
+    const exec = splitDate(body.execDate);
+    const issue = splitDate(body.issueDate || body.execDate);
+    const searchStart = splitDate(body.searchStartDate || body.execDate);
+    const searchEnd = splitDate(body.searchEndDate || body.execDate);
+
+    const formData = {
+      orgName: body.orgName || "",
+      suspectName: body.suspectName || "",
+      crimeName: body.crimeName || "",
+      execYear: exec.year,
+      execMonth: exec.month,
+      execDay: exec.day,
+      execPlace: body.execPlace || "",
+      officer1Name: body.officer1Name || "",
+      officer2Name: body.officer2Name || "",
+      seizureProcess: body.seizureProcess || "",
+      participants: Array.isArray(body.participants) ? body.participants.slice(0, 4) : [],
+      items: Array.isArray(body.items) ? body.items.slice(0, 21) : [],
+      holder: body.holder || {},
+      owner: body.owner || {},
+      searchPlace: body.searchPlace || "",
+      searchTarget: body.searchTarget || "",
+      searchResult: body.searchResult || "",
+      searchStartYear: searchStart.year,
+      searchStartMonth: searchStart.month,
+      searchStartDay: searchStart.day,
+      searchEndYear: searchEnd.year,
+      searchEndMonth: searchEnd.month,
+      searchEndDay: searchEnd.day,
+      docNo: body.docNo || "",
+      issueYear: issue.year,
+      issueMonth: issue.month,
+      issueDay: issue.day,
+      recipientName: body.recipientName || "",
+    };
+
+    const {
+      seizureReportBuffer,
+      seizureListBuffer,
+      searchReportBuffer,
+      searchCertificateBuffer,
+      seizureTotalListBuffer,
+    } = await generateExecutionFormBuffers(formData);
+
+    const stamp = new Date().toISOString().replace(/[:T]/g, "-").slice(0, 19);
+    const safeCrime = (formData.crimeName || "집행서식").replace(/[\\/:*?"<>|]/g, "");
+    const zipName = `영장집행서식_${safeCrime}_${stamp}.zip`;
+
+    const zipBuf = await zipFiles([
+      { name: `압수조서_${safeCrime}_${stamp}.hwpx`, data: seizureReportBuffer },
+      { name: `압수목록_${safeCrime}_${stamp}.hwpx`, data: seizureListBuffer },
+      { name: `압수물총목록_${safeCrime}_${stamp}.hwpx`, data: seizureTotalListBuffer },
+      { name: `수색조서_${safeCrime}_${stamp}.hwpx`, data: searchReportBuffer },
+      { name: `수색결과증명서_${safeCrime}_${stamp}.hwpx`, data: searchCertificateBuffer },
+    ]);
+
     res.setHeader("Content-Type", "application/zip");
     res.setHeader(
       "Content-Disposition",
