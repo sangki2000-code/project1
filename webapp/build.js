@@ -67,6 +67,7 @@ function build() {
     constSource("PROSE_PARA_PR_ID", generateHwpx.PROSE_PARA_PR_ID),
     fnSource(generateHwpx.numberIfMultiple, "numberIfMultiple"),
     fnSource(generateHwpx.joinToSingleLine, "joinToSingleLine"),
+    fnSource(generateHwpx.formatCrimeContext, "formatCrimeContext"),
     fnSource(generateHwpx.fillApplicationSection0, "fillApplicationSection0"),
     fnSource(generateHwpx.fillAttachmentSection0, "fillAttachmentSection0"),
     fnSource(generateExecutionForms.dateParts, "dateParts"),
@@ -81,6 +82,7 @@ function build() {
   const xmlFillJs = stripModuleExports(readText("lib/xmlFill.js"), "lib/xmlFill.js");
   const crimeFactsJs = stripModuleExports(readText("lib/crimeFactsExamples.js"), "lib/crimeFactsExamples.js");
   const evidenceCategoriesJs = stripModuleExports(readText("lib/evidenceCategories.js"), "lib/evidenceCategories.js");
+  const necessityReasonJs = stripModuleExports(readText("lib/necessityReasonExamples.js"), "lib/necessityReasonExamples.js");
   const executionChecklistJs = stripModuleExports(readText("lib/executionChecklist.js"), "lib/executionChecklist.js");
   const fieldsJs = stripRequireLines(
     stripModuleExports(readText("lib/fields.js"), "lib/fields.js"),
@@ -91,9 +93,10 @@ function build() {
     "window.AppData = (function(){\n" +
     crimeFactsJs + "\n" +
     evidenceCategoriesJs + "\n" +
+    necessityReasonJs + "\n" +
     executionChecklistJs + "\n" +
     fieldsJs + "\n" +
-    "return { CRIME_NAME_PRESETS, SEIZURE_ITEM_PRESETS, SEARCH_PLACE_PRESETS, EVIDENCE_CATEGORIES, CRIME_FACTS_EXAMPLES, EXECUTION_CHECKLIST };\n" +
+    "return { CRIME_NAME_PRESETS, SEIZURE_ITEM_PRESETS, SEARCH_PLACE_PRESETS, NECESSITY_REASON_TYPES, EVIDENCE_CATEGORIES, CRIME_FACTS_EXAMPLES, EXECUTION_CHECKLIST };\n" +
     "})();";
 
   // --- 3. 원본 .hwpx 서식 7개 + 로고를 base64로 인코딩 ---

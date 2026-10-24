@@ -122,6 +122,10 @@ textarea{resize:vertical;font-family:inherit;line-height:1.6;}
 .tip-anchor:focus-within .tip-bubble{
   opacity:1; transform:translateY(0);
 }
+.tip-anchor:hover .tip-bubble{
+  opacity:1; transform:translateY(0);
+}
+.tip-bubble-wide{max-width:400px;}
 
 .hint{font-size:12.5px;color:var(--ink-muted);margin:4px 0 10px;}
 
