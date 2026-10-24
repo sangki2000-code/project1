@@ -1,0 +1,380 @@
+<div class="page" id="app">
+  <header class="hero">
+    <div class="hero-top">
+      <img src="/org-logo.png" alt="기관 로고" class="org-logo" onerror="this.remove()" />
+      <div>
+        <p class="eyebrow">별지 제55호서식 기반 · 웹 단일 파일 버전 · 서버 없이 이 PC에서만 동작</p>
+        <h1>영장업무 도우미</h1>
+      </div>
+    </div>
+    <p class="sub">압수수색영장신청서 작성, 영장집행순서 체크리스트, 집행 후 서식 작성을 이 파일 하나로 씁니다. Node.js 설치나 서버 실행이 필요 없습니다 — 이 .html 파일을 열기만 하면 됩니다.</p>
+    <p class="credit">개발자: 법무연수원 김상기</p>
+    <nav class="tool-nav">
+      <a href="#" class="tool-nav-link tool-nav-link-active" data-view="apply">1. 영장신청서 작성</a>
+      <a href="#" class="tool-nav-link" data-view="checklist">2. 영장집행순서 체크리스트</a>
+      <a href="#" class="tool-nav-link" data-view="execution">3. 집행 후 서식 작성</a>
+    </nav>
+  </header>
+
+  <!-- ==================== 1. 영장신청서 작성 ==================== -->
+  <div data-view-panel="apply">
+
+    <div class="notice notice-info">
+      <strong>이 도구가 하는 일과 하지 않는 일</strong> — 이 프로그램은 신청서의 형식(서식·레이아웃·별지 구성)만 완성해 줍니다. 별지에 들어갈 구체적인 내용, 특히 범죄사실은 이 화면에서 자동으로 채워지지 않으며 사건마다 직접 작성해야 합니다.
+      설득력 있는 신청서가 되려면 아래에 대한 이해가 필요합니다:
+      <ul>
+        <li>영장 신청서의 작성 요건(범죄혐의의 소명 정도, 필요성·상당성)</li>
+        <li>범죄사실을 법원이 납득할 수 있는 논리로 작성하는 요령</li>
+        <li>범죄혐의의 정황을 뒷받침하는 소명자료 제시 방법</li>
+        <li>압수수색이 임의제출이 아닌 강제처분이어야 하는 필요성 소명</li>
+        <li>해당 수색 장소에 압수할 물건이 존재할 개연성에 대한 소명</li>
+      </ul>
+      이 부분은 도구 사용법과는 별개의 실무 역량이므로, 관련 실무 교육을 통해 익히시길 권장합니다.
+    </div>
+
+    <div class="notice notice-danger">
+      <strong>보안 주의</strong> — 아래 "피의자 인적사항"은 실제 수사 정보입니다. 입력한 내용은 저장되지 않고 생성되는 파일 안에만 그대로 담겨 다운로드됩니다(이 PC에 사본을 남기지 않습니다).
+      다운로드한 파일과 이 PC의 관리에 각별히 유의하세요. 확실하지 않다면 공란으로 두었다가 <u>오프라인 상태에서 직접</u> 채워 넣는 기존 방식을 권장합니다.
+    </div>
+
+    <form id="form">
+
+      <section class="card card-danger">
+        <h2>1. 피의자 인적사항 <span class="danger-tag">민감정보</span></h2>
+        <p class="hint">필요한 경우에만 입력하세요. 비워두면 기존처럼 공란으로 출력됩니다.</p>
+        <div class="grid">
+          <label>성명
+            <span class="tip-anchor">
+              <span class="tip-bubble">피의자 성명. 민감정보이니 꼭 필요한 경우에만 입력하세요.</span>
+              <input type="text" name="suspectName" autocomplete="off" placeholder="비워두면 공란으로 출력됩니다" />
+            </span>
+          </label>
+          <label>주민등록번호
+            <span class="tip-anchor">
+              <span class="tip-bubble">개인정보보호법상 고유식별정보로, 특히 민감합니다. 꼭 필요한 경우에만 입력하세요.</span>
+              <input type="text" name="suspectRRN" autocomplete="off" placeholder="비워두면 공란으로 출력됩니다" />
+            </span>
+          </label>
+          <label>직업
+            <span class="tip-anchor">
+              <span class="tip-bubble">피의자의 직업.</span>
+              <input type="text" name="suspectJob" autocomplete="off" placeholder="비워두면 공란으로 출력됩니다" />
+            </span>
+          </label>
+          <label>주거
+            <span class="tip-anchor">
+              <span class="tip-bubble">피의자의 주거지 주소.</span>
+              <input type="text" name="suspectAddress" autocomplete="off" placeholder="비워두면 공란으로 출력됩니다" />
+            </span>
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>2. 기본 정보</h2>
+        <div class="grid">
+          <label>기관명
+            <span class="tip-anchor">
+              <span class="tip-bubble">소속 특사경 지명 기관의 정식 명칭이에요.<br />예: 관세청 서울본부세관 조사1과</span>
+              <input type="text" name="orgName" placeholder="예: 관세청 서울본부세관 조사1과" />
+            </span>
+          </label>
+          <label>문서번호 (제 __ 호)
+            <span class="tip-anchor">
+              <span class="tip-bubble">기관에서 쓰는 문서 접수·발송 관리번호 대장의 번호를 그대로 적어요.</span>
+              <input type="text" name="docNo" placeholder="예: 2026-123" />
+            </span>
+          </label>
+          <label>발신일자
+            <span class="tip-anchor">
+              <span class="tip-bubble">이 신청서를 검찰청에 보내는 날짜예요.</span>
+              <input type="date" name="sendDate" />
+            </span>
+          </label>
+          <label>영장 유효기간(까지)
+            <span class="tip-anchor">
+              <span class="tip-bubble">이 날짜까지 압수수색을 집행할 수 있어요. 발신일로부터 7일을 넘기면 아래 "특이사항"에 사유를 함께 적어야 해요.</span>
+              <input type="date" name="validDate" />
+            </span>
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>3. 수신 검찰청 · 죄명</h2>
+        <div class="grid">
+          <label>수신 지방검찰청
+            <div class="suffix-input">
+              <span class="tip-anchor">
+                <span class="tip-bubble">사건을 보낼 관할 지방검찰청이에요. 관할이 헷갈리면 소속 기관 법무담당에게 먼저 확인하세요.</span>
+                <input type="text" name="prosecutorsOffice" placeholder="예: 서울중앙" />
+              </span>
+              <span>지방검찰청</span>
+            </div>
+          </label>
+          <label>변호인 (선임된 경우만)
+            <span class="tip-anchor">
+              <span class="tip-bubble">선임된 변호인이 있을 때만 적어요. 없으면 비워두면 됩니다.</span>
+              <input type="text" name="defenseCounsel" placeholder="선임된 변호인이 없으면 비워두세요" />
+            </span>
+          </label>
+        </div>
+        <label class="block">죄명 (피의사건명)
+          <div class="chips" data-chips-for="crimeName"></div>
+          <span class="tip-anchor">
+            <span class="tip-bubble">정식 법령 명칭 뒤에 "위반"을 붙여 적어요. 위 칩을 눌러도 되고 직접 입력해도 됩니다.</span>
+            <input type="text" name="crimeName" placeholder="예: 관세법위반 — 위 칩을 클릭하거나 직접 입력하세요" />
+          </span>
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>4. 별지로 작성되는 항목</h2>
+        <p class="hint">아래 항목들은 신청서 본문에는 "별지1", "별지2", "별지3"로 표시되고, 실제 내용은 문서 뒤쪽 별지 페이지에 들어갑니다.</p>
+
+        <label class="block">
+          <span class="field-title">압수할 물건 <span class="section-tag">별지3</span></span>
+          <div class="chips" data-chips-for="seizureItems" data-mode="append-line"></div>
+          <span class="tip-anchor">
+            <span class="tip-bubble">기간을 꼭 넣으세요(예: 2026. 1.경부터 현재까지) — 기간이 없으면 관련성 부족으로 기각될 수 있어요. "~ 등", "~ 일체"처럼 포괄적으로 쓰지 말고 물건을 구체적으로 특정하세요. 한 줄에 하나씩 적으면 여러 개일 때 자동으로 1. 2. 번호가 붙습니다.</span>
+            <textarea name="seizureItems" rows="4" placeholder="칩을 클릭해 추가하거나 직접 입력하세요. 한 줄에 하나씩, 기간을 포함해 구체적으로 적으세요."></textarea>
+          </span>
+        </label>
+
+        <label class="block">
+          <span class="field-title">수색ㆍ검증할 장소, 신체 또는 물건 <span class="section-tag">별지3</span></span>
+          <div class="addr-inputs">
+            <div class="addr-row">
+              <button type="button" class="chip" id="useSuspectAddress" disabled>위 "1. 피의자 인적사항"의 주거 주소와 동일 (클릭 시 자동 입력)</button>
+            </div>
+            <div class="addr-row">
+              <input type="text" id="residenceAddr" placeholder="주소가 다르면 여기에 입력" />
+              <button type="button" class="chip" id="addResidence">주거지로 추가</button>
+            </div>
+            <div class="addr-row">
+              <input type="text" id="workplaceAddr" placeholder="피의자 사업장 주소" />
+              <button type="button" class="chip" id="addWorkplace">사업장으로 추가</button>
+            </div>
+          </div>
+          <div class="chips" data-chips-for="searchPlace" data-mode="append-line"></div>
+          <span class="tip-anchor">
+            <span class="tip-bubble">장소를 포괄적으로 적으면("압수수색 과정 중 확인되는 장소" 등) 특정성이 없다고 보아 기각될 수 있어요. 정확한 층·호실을 모르면, 관련 업무를 담당하는 부서 단위로 한정해서 적으세요. 한 줄에 하나씩 적으면 여러 곳일 때 자동으로 1. 2. 번호가 붙습니다.</span>
+            <textarea name="searchPlace" rows="4" placeholder="위에서 주소를 입력해 추가하거나, 칩을 클릭하거나, 직접 입력하세요."></textarea>
+          </span>
+        </label>
+
+        <label class="block">
+          <span class="field-title">범죄사실 <span class="section-tag">별지1</span></span>
+          <p class="hint">위 "3. 수신 검찰청ㆍ죄명"에서 죄명 칩을 클릭하면, 해당 죄명의 작성례가 있는 경우 아래 칸에 자동으로 채워집니다(기존 입력 내용은 덮어씌워집니다). 반드시 실제 사건의 일시ㆍ장소ㆍ금액 등 구체적 사실로 고쳐 쓰세요. 작성례가 없는 죄명이거나 비워두면, 생성된 문서에는 "(작성 안내) 피의자의 직업, 금지규정, 위반행위 결과의 순서로 기재"라는 기본 안내 문구가 대신 표시됩니다.</p>
+          <span class="tip-anchor">
+            <span class="tip-bubble">피의자의 직업 → 금지규정 → 위반행위 결과 순서로 적으세요.</span>
+            <textarea name="crimeFacts" rows="6" placeholder="죄명 칩을 클릭하면 작성례가 있는 경우 자동으로 채워집니다. 없으면 직접 입력하세요."></textarea>
+          </span>
+        </label>
+
+        <label class="block">
+          <span class="field-title">압수수색을 필요로 하는 사유 — 범죄혐의의 정황 <span class="section-tag">별지2</span></span>
+          <p class="hint"><span class="legend-dot legend-dot-1"></span>대분류 → <span class="legend-dot legend-dot-2"></span>중분류 순서로 클릭해 범위를 좁힌 뒤, <span class="legend-dot legend-dot-3"></span>세부항목을 클릭하면 그 항목만 아래 칸에 한 줄씩 추가됩니다(중분류 이름은 입력되지 않습니다). 목록에 없으면 직접 입력해서 추가하세요.</p>
+          <div class="chips" id="evidenceCategories"></div>
+          <div class="chips" id="evidenceGroups"></div>
+          <div class="chips" id="evidenceItems"></div>
+          <div class="evidence-manual">
+            <input type="text" id="evidenceManualInput" placeholder="목록에 없는 항목은 여기에 직접 입력" />
+            <button type="button" id="evidenceManualAdd" class="chip">추가</button>
+          </div>
+          <span class="tip-anchor">
+            <span class="tip-bubble">어떤 소명자료(자인서, 수사보고, 진술서, 증거사진, 거래내역서 등)로 범죄혐의가 인정되는지 적으세요. 위 구분ㆍ항목을 클릭해 추가하거나 직접 입력해도 됩니다.</span>
+            <textarea name="crimeContext" rows="5" placeholder="예: 자인서, 수사보고, 진술서, 증거사진에 의하면 피의자의 범죄혐의가 인정됨"></textarea>
+          </span>
+        </label>
+
+        <label class="block">
+          <span class="field-title">압수수색을 필요로 하는 사유 — 압수수색의 필요성 <span class="section-tag">별지2</span></span>
+          <span class="tip-anchor">
+            <span class="tip-bubble">왜 임의제출이 아니라 압수·수색·검증이어야 하는지 적으세요(증거인멸 우려, 임의제출 거부 등).</span>
+            <textarea name="necessityReason" rows="3" placeholder="예: 임의제출을 요구할 경우 증거를 인멸할 우려가 있어 압수수색이 필요함"></textarea>
+          </span>
+        </label>
+      </section>
+
+      <details class="card">
+        <summary>5. 특이사항 (해당하는 경우에만 작성)</summary>
+        <label class="block">7일을 넘는 유효기간을 필요로 하는 취지와 사유
+          <span class="tip-anchor">
+            <span class="tip-bubble">위 유효기간이 발신일로부터 7일을 넘길 때만 적어요. 왜 7일 안에 집행하기 어려운지 사유를 적습니다.</span>
+            <textarea name="over7DaysReason" rows="2"></textarea>
+          </span>
+        </label>
+        <label class="block">둘 이상의 영장을 신청하는 취지와 사유
+          <span class="tip-anchor">
+            <span class="tip-bubble">같은 사건으로 영장을 두 장 이상 신청할 때만 적어요. 해당 없으면 비워두세요.</span>
+            <textarea name="multipleWarrantsReason" rows="2"></textarea>
+          </span>
+        </label>
+        <label class="block">일출 전 또는 일몰 후 집행을 필요로 하는 취지와 사유
+          <span class="tip-anchor">
+            <span class="tip-bubble">야간(일몰 후~일출 전)에 집행해야만 하는 이유가 있을 때만 적어요.</span>
+            <textarea name="nightExecutionReason" rows="2"></textarea>
+          </span>
+        </label>
+        <label class="block">신체검사를 받을 자의 성별, 건강상태
+          <span class="tip-anchor">
+            <span class="tip-bubble">신체검사가 필요한 경우에만, 대상자의 성별과 건강상태(특이사항 있으면 함께)를 적어요.</span>
+            <textarea name="bodyExamInfo" rows="2"></textarea>
+          </span>
+        </label>
+      </details>
+
+      <div class="actions">
+        <button type="submit" id="generateBtn" class="primary">신청서 생성 (.zip 다운로드)</button>
+        <span id="status" role="status" aria-live="polite"></span>
+      </div>
+      <p class="hint">생성된 파일은 다운로드만 되고, 이 PC에는 별도로 저장되지 않습니다.</p>
+    </form>
+  </div>
+
+  <!-- ==================== 2. 영장집행순서 체크리스트 ==================== -->
+  <div data-view-panel="checklist" hidden>
+    <div class="notice notice-info">
+      <strong>이 체크리스트의 근거와 한계</strong> — 형사소송법 제118조ㆍ제122조 및 압수조서(별지 제70호서식)ㆍ압수목록(별지 제71호서식)ㆍ수색조서(별지 제72호서식)ㆍ수색결과증명서(별지 제73호서식)ㆍ압수물총목록(별지 제137호서식) 등 실무 서식을 근거로 구성했습니다.
+      실제 사건마다 참여권자 범위, 전자정보 압수 특칙, 야간집행 등 세부 판단이 달라질 수 있으므로, 이 체크리스트는 순서를 놓치지 않기 위한 보조 도구로만 활용하고 최종 판단은 직접 하세요.
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <span id="progressLabel" class="hint">0 / 0 완료</span>
+      <button type="button" id="resetBtn" class="chip">체크 초기화</button>
+    </div>
+
+    <div id="phases"></div>
+  </div>
+
+  <!-- ==================== 3. 집행 후 서식 작성 ==================== -->
+  <div data-view-panel="execution" hidden>
+    <div class="notice notice-info">
+      <strong>이 도구가 하는 일</strong> — 아래 정보를 한 번 입력하면 압수조서ㆍ압수목록ㆍ압수물총목록ㆍ수색조서ㆍ수색결과증명서 5개 서식을 한꺼번에 채워 줍니다.
+      증거물을 발견했으면 <b>압수</b> 관련 서식(압수조서ㆍ압수목록ㆍ압수물총목록)을, 발견하지 못했으면 <b>수색</b> 관련 서식(수색조서ㆍ수색결과증명서)을 쓰고 나머지는 버리면 됩니다.
+      "1. 영장신청서 작성"에서 바로 넘어왔다면 기관명ㆍ피의자 성명ㆍ죄명은 자동으로 채워져 있습니다.
+    </div>
+
+    <div class="notice notice-danger">
+      <strong>보안 주의</strong> — 피의자ㆍ참여인 인적사항은 실제 수사 정보입니다. 입력한 내용은 저장되지 않고 생성되는 파일 안에만 담겨 다운로드됩니다(이 PC에 사본을 남기지 않습니다).
+    </div>
+
+    <form id="execForm">
+
+      <section class="card">
+        <h2>1. 공통 정보</h2>
+        <div class="grid">
+          <label>기관명
+            <input type="text" name="orgName" placeholder="예: 관세청 서울본부세관 조사1과" />
+          </label>
+          <label>피의자 성명
+            <input type="text" name="suspectName" autocomplete="off" />
+          </label>
+          <label>죄명 (피의사건명)
+            <input type="text" name="crimeName" placeholder="예: 관세법위반" />
+          </label>
+          <label>집행 일자
+            <input type="date" name="execDate" />
+          </label>
+          <label>집행 장소
+            <input type="text" name="execPlace" placeholder="예: 서울 강남구 ○○로 1 피의자 운영 사무실" />
+          </label>
+          <label>특별사법경찰관 (집행자)
+            <input type="text" name="officer1Name" placeholder="예: 행정주사 홍길동" />
+          </label>
+          <label>특별사법경찰리 (참여 직원, 있는 경우)
+            <input type="text" name="officer2Name" placeholder="없으면 비워두세요" />
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>2. 압수 관련 서식 <span class="section-tag">증거물을 발견한 경우</span></h2>
+        <label class="block">압수경위
+          <span class="tip-anchor">
+            <span class="tip-bubble">언제ㆍ어디서ㆍ누구에게 영장을 제시했는지, 어떻게 수색해서 무엇을 발견했는지, 압수 뒤 무엇을 교부했는지 순서대로 적으세요.</span>
+            <textarea name="seizureProcess" rows="4" placeholder="예: 원 일시, 장소에서 현장에 있던 피의자에게 OO지방법원 판사 OOO가 발부한 압수수색검증영장(제OO호)을 제시하고, 피의자를 참여하게 한 뒤 OO을 수색하여 별지 압수목록에 기재한 증거물을 발견하고 이를 압수한 뒤..."></textarea>
+          </span>
+        </label>
+
+        <p class="field-title">참여인 <span class="section-tag">최대 4명</span></p>
+        <div id="participants"></div>
+        <button type="button" id="addParticipant" class="chip">참여인 추가</button>
+
+        <p class="field-title" style="margin-top:18px;">압수목록 품목 <span class="section-tag">최대 7건</span></p>
+        <p class="hint">기종ㆍ시리얼번호ㆍ제조일자 등 나중에도 물건의 동일성을 확인할 수 있도록 구체적으로 적으세요.</p>
+        <div id="items"></div>
+        <button type="button" id="addItem" class="chip">품목 추가</button>
+
+        <p class="field-title" style="margin-top:18px;">소지자 / 소유자 <span class="section-tag">압수목록에 공통 적용</span></p>
+        <p class="hint">보통 피의자 본인입니다. 아래 "피의자 정보와 동일" 버튼으로 채운 뒤 필요한 부분만 고치세요.</p>
+        <button type="button" id="copySuspectToHolder" class="chip">소지자란에 피의자 성명 채우기</button>
+        <div class="grid" style="margin-top:10px;">
+          <label>소지자 성명<input type="text" id="holderName" /></label>
+          <label>소지자 주소<input type="text" id="holderAddress" /></label>
+          <label>소지자 주민등록번호<input type="text" id="holderRRN" /></label>
+          <label>소지자 전화번호<input type="text" id="holderPhone" /></label>
+        </div>
+        <button type="button" id="copyHolderToOwner" class="chip" style="margin-top:10px;">소유자란에 소지자 정보 복사</button>
+        <div class="grid" style="margin-top:10px;">
+          <label>소유자 성명<input type="text" id="ownerName" /></label>
+          <label>소유자 주소<input type="text" id="ownerAddress" /></label>
+          <label>소유자 주민등록번호<input type="text" id="ownerRRN" /></label>
+          <label>소유자 전화번호<input type="text" id="ownerPhone" /></label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>3. 수색 관련 서식 <span class="section-tag">증거물을 발견하지 못한 경우</span></h2>
+        <div class="grid">
+          <label>수색장소
+            <input type="text" name="searchPlace" />
+          </label>
+          <label>수색한 신체 개소, 물건
+            <input type="text" name="searchTarget" placeholder="예: 사무실 내 서류함, 컴퓨터" />
+          </label>
+        </div>
+        <label class="block">수색결과
+          <textarea name="searchResult" rows="2" placeholder="예: 혐의 관련 증거물을 발견하지 못함"></textarea>
+        </label>
+        <div class="grid">
+          <label>수색 착수 일시
+            <input type="date" name="searchStartDate" />
+          </label>
+          <label>수색 종료 일시
+            <input type="date" name="searchEndDate" />
+          </label>
+        </div>
+
+        <p class="field-title" style="margin-top:18px;">참여인 (수색조서용) <span class="section-tag">최대 4명, 위 2번과 동일인이면 그대로 둠</span></p>
+        <p class="hint">위 "2. 압수 관련 서식"에 입력한 참여인을 그대로 사용합니다. 수색에만 참여한 사람이 더 있으면 위에서 추가하세요.</p>
+      </section>
+
+      <section class="card">
+        <h2>4. 수색결과 증명서 <span class="section-tag">증거물을 발견하지 못한 경우, 수색받은 자에게 교부</span></h2>
+        <div class="grid">
+          <label>문서번호 (제 __ 호)
+            <input type="text" name="docNo" placeholder="예: 2026-55" />
+          </label>
+          <label>발급 일자
+            <input type="date" name="issueDate" />
+            <span class="hint" style="margin:2px 0 0;">비워두면 집행 일자를 그대로 씁니다.</span>
+          </label>
+          <label>수신인 (증명서를 받는 사람)
+            <input type="text" name="recipientName" />
+            <span class="hint" style="margin:2px 0 0;">비워두면 피의자 성명을 그대로 씁니다.</span>
+          </label>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button type="submit" id="execGenerateBtn" class="primary">서식 생성 (.zip 다운로드)</button>
+        <span id="execStatus" role="status" aria-live="polite"></span>
+      </div>
+      <p class="hint">생성된 파일은 다운로드만 되고, 이 PC에는 별도로 저장되지 않습니다.</p>
+    </form>
+  </div>
+
+</div>

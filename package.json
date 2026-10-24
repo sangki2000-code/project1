@@ -5,11 +5,15 @@
   "description": "클릭형 입력으로 압수수색영장신청서(별지 제55호서식) .hwpx 파일을 생성하는 로컬 전용 도구",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "build:standalone": "node webapp/build.js"
   },
   "dependencies": {
     "express": "^5.2.1",
     "yauzl": "^3.4.0",
     "yazl": "^3.3.1"
+  },
+  "devDependencies": {
+    "jszip": "^3.10.2"
   }
 }
